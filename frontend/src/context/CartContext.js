@@ -1,15 +1,18 @@
 import React, { createContext, useContext, useState } from "react";
 
-const CartContext = createContext();
+// Create context
+export const CartContext = createContext();
 
+// Custom hook
 export const useCart = () => {
   return useContext(CartContext);
 };
 
-const CartProvider = ({ children }) => {
+// Provider (FIXED: named export)
+export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  // ✅ Add item (Odyssey style — no merging)
+  // Add item (Odyssey style — no merging)
   const addToCart = (product) => {
     setCartItems((prev) => [
       ...prev,
@@ -22,14 +25,14 @@ const CartProvider = ({ children }) => {
     ]);
   };
 
-  // ✅ Remove using index (matches CartPage)
+  // Remove using index
   const removeFromCart = (index) => {
     setCartItems((prev) =>
       prev.filter((_, i) => i !== index)
     );
   };
 
-  // ✅ Update quantity using index
+  // Update quantity
   const updateQuantity = (index, quantity) => {
     if (quantity < 1) return;
 
@@ -40,7 +43,7 @@ const CartProvider = ({ children }) => {
     );
   };
 
-  // ✅ Total calculation
+  // Total calculation
   const getCartTotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
@@ -62,5 +65,3 @@ const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
-export default CartProvider;

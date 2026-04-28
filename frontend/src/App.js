@@ -1,20 +1,24 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import CategoryPage from "./pages/CategoryPage";
-import Cart from "./pages/Cart"; // ✅ added
-import CartProvider from "./context/CartContext";
+import { Routes, Route } from "react-router-dom";
+import Print from "./pages/Print";
+import Stationery from "./pages/Stationery"; // Dashboard
+import StationeryPage from "./pages/StationeryPage";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
-    <CartProvider> {/* ✅ CRITICAL */}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/category/:type" element={<CategoryPage />} />
-          <Route path="/cart" element={<Cart />} /> {/* ✅ added */}
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+    <Routes>
+      {/* Dashboard */}
+      <Route path="/" element={<Stationery />} />
+
+      {/* Category Page */}
+      <Route path="/category/:type" element={<StationeryPage />} />
+
+      {/* 🔥 Print / Report */}
+      <Route path="/report" element={<Print />} />
+
+      {/* Cart */}
+      <Route path="/cart" element={<Cart />} />
+    </Routes>
   );
 }
 
