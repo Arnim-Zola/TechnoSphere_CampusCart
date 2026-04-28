@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-
+const vendorRoutes = require("./routes/vendorRoutes"); //Added new
 const app = express();
 
 app.use(cors());
@@ -14,6 +14,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/vendor", vendorRoutes); //Added new
 
 // Health check
 app.get("/", (req, res) => res.send("CampusCart API running"));
