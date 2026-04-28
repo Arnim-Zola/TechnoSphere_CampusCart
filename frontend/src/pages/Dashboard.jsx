@@ -1,24 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { CATEGORIES } from "../constants";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const handleNavigation = (category) => {
-    console.log("Navigating to:", category); // ✅ debug
-    navigate(`/category/${category}`);
-  };
-
   return (
     <div>
-      <h1>CampusCart Dashboard</h1>
+      <h1>Categories</h1>
 
-      <button onClick={() => handleNavigation("writing")}>
-        Writing Essentials
+      <button onClick={() => navigate(`/category/${CATEGORIES.PAPER}`)}>
+        Paper Products
       </button>
 
-      <button onClick={() => handleNavigation("correction")}>
-        Correction & Marking
+      <button onClick={() => navigate(`/category/${CATEGORIES.MEASURING}`)}>
+        Measuring & Drawing
+      </button>
+
+      <button onClick={() => navigate(`/category/${CATEGORIES.UTILITY}`)}>
+        Office & Utility
       </button>
     </div>
   );

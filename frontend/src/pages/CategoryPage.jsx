@@ -1,76 +1,153 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useCart } from "../context/CartContext"; // ✅ FIXED
-
-const BASE_URL = "http://localhost:5000/api";
 
 const CategoryPage = () => {
-  const { type } = useParams();
-
-  const { addToCart, cartItems } = useCart(); // ✅ FIXED
+  const { category } = useParams();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selection, setSelection] = useState({});
+
+  // 🔹 Dummy data (used if backend fails or empty)
+  const dummyData = [
+    {
+      _id: "1",
+      name: "Sample Item 1",
+      price: 20,
+      image: "https://via.placeholder.com/100",
+      description: "Demo product"
+    },
+    {
+      _id: "2",
+      name: "Sample Item 2",
+      price: 30,
+      image: "https://via.placeholder.com/100",
+      description: "Demo product"
+    }
+  ];
 
   useEffect(() => {
-    if (!type) return;
     fetchProducts();
-  }, [type]);
+  }, [category]);
 
   const fetchProducts = async () => {
-    setLoading(true);
     try {
-      const url = `${BASE_URL}/products?category=${type}`;
-      console.log("Fetching:", url);
+      setLoading(true);
 
-      const res = await fetch(url);
+      const res = await fetch(`http://localhost:5000/api/products?category=${category}`);
       const data = await res.json();
-      setProducts(data);
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
-  };
 
-  // 🔥 DEBUG
-  console.log("Cart:", cartItems);
+      // ✅ Use backend if available, else fallback
+      if (data && data.length > 0) {
+        setProducts(data);
+      } else {
+        setProducts(dummyData);
+      }
+
+    } catch (error) {
+      console.error("Backend not available, using dummy data");
+
+      // ✅ Fallback if API fails
+      setProducts(dummyData);
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
-      <h2>{type ? type.toUpperCase() : "Loading..."}</h2>
+      <h2>{category.toUpperCase()} Products</h2>
 
       {loading && <p>Loading...</p>}
 
-      {!loading && products.length === 0 && (
-        <p>No products found</p>
-      )}
+      <div>
+        {products.map((item) => (
+          <div
+            key={item._id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              margin: "10px"
+            }}
+          >
+            <img src={item.image} alt={item.name} width="100" />
+            <h3>{item.name}</h3>
+            <p>₹{item.price}</p>
+            <p>{item.description}</p>
 
-      {products.map((product) => (
-        <div
-          key={product._id}
-          style={{
-            border: "1px solid gray",
-            padding: "10px",
-            margin: "10px",
-            width: "200px"
-          }}
-        >
-          <img
-            src={product.image}
-            width="100"
-            alt={product.name}
-          />
-          <h3>{product.name}</h3>
-          <p>₹{product.price}</p>
+            {/* BRAND */}
+            <select
+              value={selection[item._id]?.brand || ""}
+              onChange={(e) =>
+                setSelection({
+                  ...selection,
+                  [item._id]: {
+                    ...selection[item._id],
+                    brand: e.target.value
+                  }
+                })
+              }
+            >
+              <option value="">Select Brand</option>
+              <option value="Generic">Generic</option>
+              <option value="Classmate">Classmate</option>
+              <option value="Camlin">Camlin</option>
+            </select>
 
-          <button onClick={() => {
-  console.log("CLICKED");   // 🔥 debug
-  addToCart(product);
-}}>
-  Add to Cart
-</button>
-        </div>
-      ))}
+            {/* COLOR */}
+            <select
+              value={selection[item._id]?.color || ""}
+              onChange={(e) =>
+                setSelection({
+                  ...selection,
+                  [item._id]: {
+                    ...selection[item._id],
+                    color: e.target.value
+                  }
+                })
+              }
+            >
+              <option value="">Select Color</option>
+              <option value="blue">Blue</option>
+              <option value="black">Black</option>
+              <option value="red">Red</option>
+            </select>
+
+            {/* QUANTITY */}
+            <select
+              value={selection[item._id]?.quantity || 1}
+              onChange={(e) =>
+                setSelection({
+                  ...selection,
+                  [item._id]: {
+                    ...selection[item._id],
+                    quantity: e.target.value
+                  }
+                })
+              }
+            >
+              {[1, 2, 3, 4, 5].map((q) => (
+                <option key={q} value={q}>
+                  {q}
+                </option>
+              ))}
+            </select>
+
+            {/* DEBUG BUTTON */}
+            <button
+              onClick={() => console.log("Selected:", selection[item._id])}
+              style={{
+                marginTop: "10px",
+                padding: "5px 10px",
+                cursor: "pointer"
+              }}
+            >
+              Add to Cart
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
