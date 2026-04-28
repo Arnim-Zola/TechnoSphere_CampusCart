@@ -1,20 +1,73 @@
-import { Routes, Route } from "react-router-dom";
-import Stationery from "./pages/Stationery";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import LoginPage from "./pages/LoginPage";
+import IntroPage from "./pages/IntroPage";
+
+import Dashboard from "./pages/Dashboard";
 import StationeryPage from "./pages/StationeryPage";
 import CartPage from "./pages/CartPage";
-import Checkout from "./pages/Checkout";
-import Receipt from "./pages/Receipt";
+import PaymentPage from "./pages/PaymentPage";
+import ReceiptPage from "./pages/ReceiptPage";
 import AdminDashboard from "./pages/AdminDashboard";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Stationery />} />
-      <Route path="/category/:type" element={<StationeryPage />} />
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/payment" element={<Checkout />} />
-      <Route path="/receipt" element={<Receipt />} />
+      {/* 🔐 AUTH FLOW */}
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/intro" element={<IntroPage />} />
+
+      {/* 🛍️ MAIN APP (STUDENT) */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/category/:type"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <StationeryPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <CartPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/checkout"
+        element={<Navigate to="/payment" replace />}
+      />
+
+      {/* 💳 PAYMENT FLOW */}
+      <Route
+        path="/payment"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <PaymentPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/receipt"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <ReceiptPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 🧑‍💼 ADMIN */}
       <Route
         path="/admin"
         element={
@@ -23,6 +76,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* ❌ FALLBACK */}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

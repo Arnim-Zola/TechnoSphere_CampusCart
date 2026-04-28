@@ -1,13 +1,55 @@
-body {
+/* RESET */
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ROOT LAYOUT */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  background-color: #080b12;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* BODY */
+body {
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #f8fafc;
+  overflow-x: hidden;
+  line-height: 1.5; /* 🔥 improves readability */
+}
+
+/* ROOT APP CONTAINER */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* 🔥 better layout control */
+}
+
+/* ANIMATIONS */
+@keyframes ip-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px); /* 🔥 smoother than 16px */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ip-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

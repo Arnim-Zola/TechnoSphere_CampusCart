@@ -1,16 +1,16 @@
 import { Navigate } from "react-router-dom";
 
 export default function ProtectedRoute({ children, allowedRole }) {
-let role = sessionStorage.getItem("role");
+  const role = sessionStorage.getItem("role")?.trim();
+  console.log("Role:", role, "Allowed:", allowedRole);
 
-if (!role) {
-role = "admin";
-sessionStorage.setItem("role", "admin");
-}
+  if (!role) {
+    return <Navigate to="/" replace />;
+  }
 
-if (allowedRole && role !== allowedRole) {
-return <Navigate to="/" replace />;
-}
+  if (allowedRole && role !== allowedRole) {
+    return <Navigate to="/" replace />;
+  }
 
-return children;
+  return children;
 }
