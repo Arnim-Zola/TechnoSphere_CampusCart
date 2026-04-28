@@ -1,103 +1,144 @@
-CampusCart – Development Progress (Evaluation 2)
+# 🚀 CampusCart – Development Progress (Evaluation 2)
 
-Phase 0: Ideation and Planning (Completed)
+## 📌 Phase 0: Ideation and Planning (Completed)
 
-Finalized project idea: CampusCart – Campus Pre-Order and Shopping Platform
-Identified problem: Long queues and inefficient manual ordering in campuses
-Defined solution: Centralized web platform for pre-ordering printouts and stationery
-Selected technology stack: MERN (MongoDB, Express, React, Node.js)
-Identified core features:
-Pre-order system
-Document upload (PDF support)
-Order management
-Responsive user interface
-Formed team and assigned roles
+* **Project Idea:** CampusCart – Campus Pre-Order and Shopping Platform
+* **Problem Identified:** Long queues and inefficient manual ordering systems in campuses
+* **Proposed Solution:** Centralized web platform for pre-ordering printouts and stationery
+* **Technology Stack:** MERN (MongoDB, Express, React, Node.js)
 
-Phase 1: Repository Setup (Completed)
+### 🔑 Core Features
 
-Created GitHub repository
-Added README.md with project description and tech stack
-Initialized project structure:
-backend/
-frontend/
-Configured version control and collaboration
-Established branch-based workflow (feature/dashboard)
+* Pre-order system
 
-Phase 2: Environment Setup (Completed)
+* Document upload (PDF support)
 
-Set up backend using Node.js and Express
-Initialized frontend using React (Create React App)
-Installed required dependencies
-Configured environment variables using dotenv
-Successfully ran both frontend and backend servers
+* Order management
 
-Phase 3: Backend Development (Partially Completed)
+* Responsive user interface
 
-Set up Express server and routing
-Connected MongoDB using Mongoose
-Created Product schema
-Implemented product APIs:
-GET /api/products
-POST /api/products
-Tested APIs using browser/Postman
-Inserted sample product data into database
+* Team formed and roles assigned
 
-Phase 4: Frontend Development (Partially Completed)
+---
 
-Created core pages:
-Dashboard
-Category Page
-Cart Page
-Print Page (PDF upload system)
+## 🛠️ Phase 1: Repository Setup (Completed)
 
-Implemented routing using React Router
-Connected frontend with backend API
-Fetched products dynamically based on category
-Displayed products in UI
-Handled loading and empty states
+* GitHub repository created
+* `README.md` added with project description and tech stack
+* Project structure initialized:
 
-Phase 5: Core Feature Implementation (In Progress)
+  * `backend/`
+  * `frontend/`
+* Version control and collaboration configured
+* Branch-based workflow established (`feature/dashboard`)
 
-Implemented Cart system using Context API (global state)
-Developed Add to Cart functionality
-Implemented Cart page UI
-Added core cart features:
-Add to Cart
-Remove from Cart
-Quantity update
-Total price calculation
+---
 
-Implemented Print System:
-PDF upload functionality
-Auto-detection of number of pages using PDF.js
-Selection of print type (Black & White / Color)
-Selection of number of copies
-Dynamic price calculation based on pages and copies
-Added print jobs to cart
+## ⚙️ Phase 2: Environment Setup (Completed)
 
-Integrated mixed cart support (stationery + print jobs)
+* Backend setup using Node.js and Express
+* Frontend initialized using React (Create React App)
+* Required dependencies installed
+* Environment variables configured using dotenv
+* Successfully ran both frontend and backend servers
 
-Phase 6: Integration and Testing (Pending)
+---
 
-Planned Tasks:
-Ensure smooth data flow between frontend and backend
-Test complete ordering workflow
-Fix UI and functional bugs
-Validate cart and order system
+## 🧩 Phase 3: Backend Development (Partially Completed)
 
-Phase 7: Finalization and Deployment (Pending)
+* Express server and routing configured
+* MongoDB connected using Mongoose
+* Product schema designed
 
-Planned Tasks:
-Improve UI/UX design
-Add final features (checkout/payment system)
-Prepare documentation
-Deploy application
-Perform final testing and presentation
+### 🔌 Implemented APIs
 
-Notes
+* `GET /api/products`
 
-Project follows a modular MERN architecture
-Focus on scalability and maintainability
-Development is iterative with continuous debugging
-Regular commits maintained for hackathon progress tracking
-Clean and structured code practices are followed
+* `POST /api/products`
+
+* APIs tested using browser/Postman
+
+* Sample product data inserted into database
+
+---
+
+## 🎨 Phase 4: Frontend Development (Partially Completed)
+
+### 📄 Pages Developed
+
+* Dashboard
+* Category Page
+* Cart Page
+* Print Page (PDF Upload System)
+
+### ⚡ Features Implemented
+
+* Routing using React Router
+* API integration with backend
+* Dynamic product fetching by category
+* Product display UI
+* Loading and empty state handling
+
+---
+
+## 🛒 Phase 5: Core Feature Implementation (In Progress)
+
+### 🧠 Cart System (Context API)
+
+* Global state management implemented
+* Add to Cart functionality
+* Remove from Cart
+* Quantity update
+* Total price calculation
+* Cart UI fully functional
+
+### 🖨️ Print System (Key Feature)
+
+* PDF upload functionality implemented
+* Auto page detection using PDF.js
+* Print configuration options:
+
+  * Print type (Black & White / Color)
+  * Number of copies
+* Dynamic pricing based on pages and copies
+* Print jobs added to cart
+
+### 🔗 Integration
+
+* Mixed cart support:
+
+  * Stationery items
+  * Print jobs
+
+---
+
+## 🧪 Phase 6: Integration and Testing (Pending)
+
+### 📋 Planned Tasks
+
+* Ensure smooth frontend-backend data flow
+* Test complete ordering workflow
+* Fix UI and functional bugs
+* Validate cart and order system
+
+---
+
+## 🚀 Phase 7: Finalization and Deployment (Pending)
+
+### 📋 Planned Tasks
+
+* Improve UI/UX design
+* Implement checkout/payment system
+* Prepare project documentation
+* Deploy application
+* Final testing and presentation
+
+---
+
+## 🧠 Notes
+
+* Project follows a modular MERN architecture
+* Focus on scalability and maintainability
+* Development is iterative with continuous debugging
+* Regular commits maintained for progress tracking
+* Clean and structured coding practices followed
