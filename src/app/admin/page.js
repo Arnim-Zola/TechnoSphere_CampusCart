@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useProducts } from "@/context/ProductContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PackageSearch, PlusCircle, CheckCircle2, XCircle, Loader2, ClipboardList, Download } from "lucide-react";
+import { PackageSearch, PlusCircle, CheckCircle2, XCircle, Loader2, ClipboardList } from "lucide-react";
 import Image from "next/image";
 import { db } from "@/lib/firebase";
 import { collection, query, orderBy, getDocs, doc, updateDoc } from "firebase/firestore";
@@ -332,20 +332,7 @@ export default function AdminPage() {
                             <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 truncate">
                               <span className="font-semibold">{item.quantity}x</span> {item.name}
                               {item.isCustomPrint && item.details && (
-                                <div className="mt-1 flex items-center gap-2">
-                                  <span className="text-gray-400 dark:text-gray-500">({item.details.pages} pgs, {item.details.color})</span>
-                                  {item.details.fileUrl && (
-                                    <a 
-                                      href={item.details.fileUrl} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded"
-                                    >
-                                      <Download size={10} />
-                                      Doc
-                                    </a>
-                                  )}
-                                </div>
+                                <span className="text-gray-400 dark:text-gray-500"> ({item.details.pages} pgs, {item.details.color})</span>
                               )}
                             </div>
                           ))}
