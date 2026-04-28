@@ -182,7 +182,6 @@ const CategoryPage = () => {
 
   return (
     <>
-      <style>{css}</style>
       <div className="sp-root">
         <div className="sp-inner">
 
