@@ -9,7 +9,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 export default function CartPage() {
-  const { cartItems, removeFromCart, updateQuantity, clearCart, getCartTotal } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
   const { user } = useAuth();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -34,7 +34,7 @@ export default function CartPage() {
         userId: user.uid,
         userEmail: user.email,
         items: cartItems,
-        totalAmount: getCartTotal(),
+        totalAmount: cartTotal,
         status: "Order Received", // New status field for admin tracking
         orderId: fakeOrderId,
         createdAt: new Date().toISOString()
@@ -149,7 +149,7 @@ export default function CartPage() {
             <div className="space-y-4 text-sm text-gray-600 dark:text-gray-400 mb-6">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-medium text-gray-900 dark:text-white">₹{getCartTotal().toFixed(2)}</span>
+                <span className="font-medium text-gray-900 dark:text-white">₹{cartTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
@@ -161,7 +161,7 @@ export default function CartPage() {
               <div className="flex justify-between items-end">
                 <span className="text-base font-bold text-gray-900 dark:text-white">Total</span>
                 <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                  ₹{getCartTotal().toFixed(2)}
+                  ₹{cartTotal.toFixed(2)}
                 </span>
               </div>
             </div>

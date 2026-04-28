@@ -254,14 +254,7 @@ export default function AdminPage() {
                 <ul className="divide-y divide-gray-100 dark:divide-zinc-800 max-h-[800px] overflow-y-auto">
                   {products.map((product) => (
                     <li key={product.id} className="p-4 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-4 flex-1 min-w-0">
-                        <div className="relative w-16 h-16 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 overflow-hidden shrink-0">
-                          {product.image ? (
-                            <Image src={product.image} alt={product.name} fill className="object-cover" />
-                          ) : (
-                            <div className="w-full h-full bg-gray-100 dark:bg-zinc-800" />
-                          )}
-                        </div>
+                      <div className="flex items-center gap-4 flex-1 min-w-0 py-2">
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{product.name}</p>
                           <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{product.category}</p>
