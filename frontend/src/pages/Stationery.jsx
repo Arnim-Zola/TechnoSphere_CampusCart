@@ -33,6 +33,10 @@ export default function Stationery() {
           Report / Print
         </button>
 
+        <button onClick={() => navigate("/category/paper")}>Paper</button>
+<button onClick={() => navigate("/category/measuring")}>Measuring</button>
+<button onClick={() => navigate("/category/office")}>Office</button>
+
       </div>
     </div>
   );
