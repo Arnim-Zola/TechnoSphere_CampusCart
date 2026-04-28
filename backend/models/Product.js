@@ -5,7 +5,13 @@ const productSchema = new mongoose.Schema({
   price: Number,
   category: String,
   image: String,
-  description: String
+  description: String,
+
+  // ✅ ADD THIS
+  inStock: {
+    type: Boolean,
+    default: true
+  }
 });
 
 module.exports = mongoose.model("Product", productSchema);
