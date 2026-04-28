@@ -1,95 +1,91 @@
-# CampusCart – Development Progress
+Phase 0: Ideation and Planning (Completed)
 
-## Current Status: Project Initialization
+Finalized project idea: CampusCart – Campus Pre-Order and Shopping Platform
+Identified problem: long queues and inefficient manual ordering system in campuses
+Defined solution: centralized web platform for pre-ordering printouts and stationery
+Selected MERN stack for development
+Identified core features:
+Pre-order system
+Document upload (PDF support)
+Order management
+Responsive user interface
+Formed team and assigned roles
 
-This document tracks the overall progress of the CampusCart project, including planning, setup, and upcoming development phases.
+Phase 1: Repository Setup (Completed)
 
----
+Created GitHub repository
+Added README.md with project description and tech stack
+Initialized project structure:
+backend/
+frontend/
+Configured version control and collaboration
+Established branch-based workflow (feature/dashboard etc.)
 
-## Phase 0: Ideation and Planning (Completed)
+Phase 2: Environment Setup (Completed)
 
-- Finalized project idea: CampusCart – Campus Pre-Order and Shopping Platform  
-- Identified problem: long queues and inefficient manual ordering system in campuses  
-- Defined solution: centralized web platform for pre-ordering printouts and stationery  
-- Selected MERN stack for development  
-- Identified core features:
-  - Pre-order system  
-  - Document upload (PDF support)  
-  - Order management  
-  - Responsive user interface  
-- Formed team and assigned initial roles  
+Set up backend using Node.js and Express
+Initialized frontend using React (Create React App)
+Installed required dependencies
+Configured environment variables
+Successfully ran frontend and backend servers
 
----
+Phase 3: Backend Development (Partially Completed)
 
-## Phase 1: Repository Setup (Completed)
+Setup Express server and routing
+Connected MongoDB using Mongoose
+Created Product schema
+Implemented product APIs:
+GET /api/products
+POST /api/products
+Tested API using browser/Postman
+Inserted sample product data into database
 
-- Created GitHub repository  
-- Added README.md with project description and tech stack  
-- Initialized project structure:
-  - backend/
-  - frontend/
-- Configured version control and collaboration  
+Phase 4: Frontend Development (Partially Completed)
 
----
+Created core pages:
+Dashboard
+Category Page
+Cart Page
 
-## Phase 2: Environment Setup (In Progress)
+Implemented routing using React Router
+Connected frontend with backend API
+Fetched products dynamically based on category
+Displayed products in UI
+Handled loading and empty states
 
-- Setting up backend using Node.js and Express  
-- Initializing frontend using React (Create React App)  
-- Installing required dependencies  
-- Configuring environment variables using dotenv  
+Phase 5: Core Feature Implementation (In Progress)
 
-Next Steps:
-- Establish backend server connection  
-- Setup basic routing  
-- Prepare frontend base structure  
+Implemented Cart system using global state (Context API)
+Developed add-to-cart functionality
+Implemented cart page UI
+Added features:
+Add to Cart
+Remove from Cart
+Quantity update
+Total price calculation
 
----
+Currently debugging cart interaction and ensuring proper state flow
 
-## Phase 3: Backend Development (Pending)
-
-Planned Tasks:
-- Setup Express server and routing  
-- Connect MongoDB using Mongoose  
-- Design database schemas (Users, Orders, Products)  
-- Implement RESTful APIs  
-- Integrate file upload using Multer  
-
----
-
-## Phase 4: Frontend Development (Pending)
-
-Planned Tasks:
-- Create React components and pages  
-- Implement routing using React Router  
-- Design UI for ordering system  
-- Integrate Axios for API communication  
-- Add animations using Framer Motion  
-
----
-
-## Phase 5: Integration and Testing (Pending)
+Phase 6: Integration and Testing (Pending)
 
 Planned Tasks:
-- Connect frontend with backend APIs  
-- Test application workflows  
-- Perform unit and integration testing  
-- Optimize performance using Web Vitals  
+Ensure smooth data flow between frontend and backend
+Test full ordering workflow
+Fix UI and functional bugs
+Validate cart and order system
 
----
-
-## Phase 6: Finalization and Deployment (Pending)
+Phase 7: Finalization and Deployment (Pending)
 
 Planned Tasks:
-- Fix bugs and improve UI/UX  
-- Prepare final documentation  
-- Deploy application  
-- Final testing and presentation  
+Improve UI/UX design
+Add final features (checkout/payment simulation)
+Prepare documentation
+Deploy application
+Final testing and presentation
 
----
+Notes
 
-## Notes
-
-- Development follows a modular and scalable approach  
-- Focus on clean code and maintainability  
-- Regular updates will be added as progress continues  
+Project follows modular MERN architecture
+Focus on scalability and maintainability
+Real-time debugging and iterative development approach
+Regular commits maintained for hackathon tracking
