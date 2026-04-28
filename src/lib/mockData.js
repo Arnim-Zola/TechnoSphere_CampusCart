@@ -36,6 +36,15 @@ export const MOCK_PRODUCTS = [
     image: "https://images.unsplash.com/photo-1596484552993-9c7104f128be?q=80&w=600&auto=format&fit=crop",
     inStock: false
   },
+  {
+    id: "18",
+    name: "Whiteboard Markers (Pack of 4)",
+    category: "Writing Essentials",
+    price: 180,
+    description: "Dry-erase markers in Black, Blue, Red, and Green. Easy wipe-off.",
+    image: "https://images.unsplash.com/photo-1580130058001-370c8ce75ec6?q=80&w=600&auto=format&fit=crop",
+    inStock: true
+  },
 
   // Paper Products
   {
@@ -44,7 +53,7 @@ export const MOCK_PRODUCTS = [
     category: "Paper Products",
     price: 120,
     description: "200-page spiral notebook with premium 70gsm paper.",
-    image: "https://images.unsplash.com/photo-1531346878377-a541e4a0ecce?q=80&w=600&auto=format&fit=crop",
+    image: "/images/notebook.png", // Generated image
     inStock: true
   },
   {
@@ -74,6 +83,15 @@ export const MOCK_PRODUCTS = [
     image: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
     inStock: true
   },
+  {
+    id: "19",
+    name: "Post-it Page Markers",
+    category: "Paper Products",
+    price: 85,
+    description: "Colorful page marker flags for easy referencing and indexing.",
+    image: "https://images.unsplash.com/photo-1532153354457-5f2fc7329f1b?q=80&w=600&auto=format&fit=crop",
+    inStock: true
+  },
 
   // Correction & Marking
   {
@@ -82,7 +100,7 @@ export const MOCK_PRODUCTS = [
     category: "Correction & Marking",
     price: 45,
     description: "Smooth application correction tape, 5mm x 8m. Tear-resistant.",
-    image: "https://images.unsplash.com/photo-1616766098956-c81f12114571?q=80&w=600&auto=format&fit=crop",
+    image: "/images/tape.png", // Generated image
     inStock: true
   },
   {
@@ -111,7 +129,7 @@ export const MOCK_PRODUCTS = [
     category: "Measuring Tools",
     price: 80,
     description: "Stainless steel ruler with both metric and imperial markings.",
-    image: "https://images.unsplash.com/photo-1610444391696-29177a493c04?q=80&w=600&auto=format&fit=crop",
+    image: "/images/ruler.png", // Generated image
     inStock: true
   },
   {
@@ -132,6 +150,15 @@ export const MOCK_PRODUCTS = [
     image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=600&auto=format&fit=crop",
     inStock: false
   },
+  {
+    id: "20",
+    name: "Mathematical Geometry Box",
+    category: "Measuring Tools",
+    price: 160,
+    description: "Complete student geometry set in a durable metal case.",
+    image: "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?q=80&w=600&auto=format&fit=crop",
+    inStock: true
+  },
 
   // Office Utility
   {
@@ -140,7 +167,7 @@ export const MOCK_PRODUCTS = [
     category: "Office Utility",
     price: 60,
     description: "Durable and stylish paperclips for organizing documents.",
-    image: "https://images.unsplash.com/photo-1506456070624-9fc2ee3ab233?q=80&w=600&auto=format&fit=crop",
+    image: "/images/paperclips.png", // Generated image
     inStock: true
   },
   {
@@ -159,6 +186,15 @@ export const MOCK_PRODUCTS = [
     price: 100,
     description: "Pack of 24 black binder clips in small, medium, and large sizes.",
     image: "https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?q=80&w=600&auto=format&fit=crop",
+    inStock: true
+  },
+  {
+    id: "21",
+    name: "Expanding Document Folder",
+    category: "Office Utility",
+    price: 220,
+    description: "A4 size document organizer with 12 pockets and tabs.",
+    image: "https://images.unsplash.com/photo-1618410320928-25228d811631?q=80&w=600&auto=format&fit=crop",
     inStock: true
   }
 ];
