@@ -90,7 +90,12 @@ Planned Tasks:
 
 ### Notes
 
-* Project follows a modular MERN architecture
-* Focus on scalability and maintainability
-* Development is iterative with continuous debugging
-* Regular commits maintained for hackathon progress tracking
+### Notes
+
+* Project follows a modular MERN architecture  
+* Focus on scalability and maintainability  
+* Development is iterative with continuous debugging  
+* Regular commits maintained for hackathon progress tracking  
+* Development follows a modular and scalable approach  
+* Focus on clean code and maintainability  
+* Regular updates will be added as progress continues  
