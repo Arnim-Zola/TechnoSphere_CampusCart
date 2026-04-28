@@ -15,7 +15,6 @@ export default function StationeryPage() {
   const [pencilType, setPencilType] = useState("");
   const [mechSize, setMechSize] = useState("");
 
-  // ✅ ALL categories (FIXED)
   const categories = {
     writing: ["Pen", "Pencil", "Mechanical Pencil"],
     correction: ["Whitener", "Correction Tape", "Highlighter"],
@@ -26,10 +25,10 @@ export default function StationeryPage() {
 
   const items = categories[category] || [];
 
+  // ✅ FIXED: always store number
   const changeQty = (item, value) => {
-    if (/^\d*$/.test(value)) {
-      setQuantities(p => ({ ...p, [item]: value }));
-    }
+    const num = Math.max(1, Number(value));
+    setQuantities((p) => ({ ...p, [item]: num }));
   };
 
   const showMsg = (msg) => {
@@ -38,7 +37,8 @@ export default function StationeryPage() {
   };
 
   const handleAdd = (item) => {
-    const qty = Number(quantities[item]) || 1;
+    const qty = quantities[item] || 1; // ✅ FIXED
+
     let name = item;
     let price = 10;
 
@@ -60,112 +60,102 @@ export default function StationeryPage() {
       price = 50;
     }
 
-    // simple pricing for others
     if (["Notebook", "Loose Sheets", "Sticky Notes"].includes(item)) price = 30;
     if (["Scale", "Protractor", "Compass"].includes(item)) price = 40;
     if (["Eraser", "Sharpener"].includes(item)) price = 5;
     if (["Glue Stick", "Stapler"].includes(item)) price = 25;
 
+    // ✅ PASS CORRECT QUANTITY
     addToCart({ name, price, quantity: qty });
-    setCategoryTotal(prev => prev + (price * qty));
+
+    setCategoryTotal((prev) => prev + price * qty);
     showMsg(`${name} added`);
   };
 
- return (
-  <div style={{ padding: "20px" }}>
-    {/* DEBUG */}
-    <h1>Category Page</h1>
-    <h2>{category ? category.toUpperCase() : "NO CATEGORY"} ITEMS</h2>
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Category Page</h1>
+      <h2>{category ? category.toUpperCase() : "NO CATEGORY"} ITEMS</h2>
 
-    {/* EMPTY STATE */}
-    {items.length === 0 && (
-      <p style={{ color: "red" }}>
-        No items found for this category
-      </p>
-    )}
+      {items.length === 0 && (
+        <p style={{ color: "red" }}>No items found for this category</p>
+      )}
 
-    {/* ITEMS */}
-    {items.map((item) => {
-      const qty = Number(quantities[item]) || 1;
+      {items.map((item) => {
+        const qty = quantities[item] || 1;
 
-      return (
-        <div
-          key={item}
-          style={{
-            border: "1px solid #ccc",
-            margin: "10px",
-            padding: "10px",
-            borderRadius: "8px"
-          }}
-        >
-          <h3>{item}</h3>
+        return (
+          <div
+            key={item}
+            style={{
+              border: "1px solid #ccc",
+              margin: "10px",
+              padding: "10px",
+              borderRadius: "8px"
+            }}
+          >
+            <h3>{item}</h3>
 
-          {/* OPTIONS */}
-          {item === "Pen" && (
-            <>
-              <select onChange={(e) => setPenType(e.target.value)}>
+            {/* OPTIONS */}
+            {item === "Pen" && (
+              <>
+                <select onChange={(e) => setPenType(e.target.value)}>
+                  <option value="">Type</option>
+                  <option>Ball</option>
+                  <option>Gel</option>
+                </select>
+
+                <select onChange={(e) => setPenColor(e.target.value)}>
+                  <option value="">Color</option>
+                  <option>Blue</option>
+                  <option>Black</option>
+                </select>
+              </>
+            )}
+
+            {item === "Pencil" && (
+              <select onChange={(e) => setPencilType(e.target.value)}>
                 <option value="">Type</option>
-                <option>Ball</option>
-                <option>Gel</option>
+                <option>HB</option>
+                <option>2B</option>
               </select>
+            )}
 
-              <select onChange={(e) => setPenColor(e.target.value)}>
-                <option value="">Color</option>
-                <option>Blue</option>
-                <option>Black</option>
+            {item === "Mechanical Pencil" && (
+              <select onChange={(e) => setMechSize(e.target.value)}>
+                <option value="">Size</option>
+                <option>0.5 mm</option>
+                <option>0.7 mm</option>
               </select>
-            </>
-          )}
+            )}
 
-          {item === "Pencil" && (
-            <select onChange={(e) => setPencilType(e.target.value)}>
-              <option value="">Type</option>
-              <option>HB</option>
-              <option>2B</option>
-            </select>
-          )}
+            {/* QUANTITY */}
+            <div style={{ marginTop: "10px" }}>
+              <button onClick={() => changeQty(item, qty - 1)}>-</button>
 
-          {item === "Mechanical Pencil" && (
-            <select onChange={(e) => setMechSize(e.target.value)}>
-              <option value="">Size</option>
-              <option>0.5 mm</option>
-              <option>0.7 mm</option>
-            </select>
-          )}
+              <span style={{ margin: "0 10px" }}>{qty}</span>
 
-          {/* QUANTITY */}
-          <div style={{ marginTop: "10px" }}>
-            <button onClick={() => changeQty(item, String(Math.max(1, qty - 1)))}>
-              -
-            </button>
+              <button onClick={() => changeQty(item, qty + 1)}>+</button>
+            </div>
 
-            <span style={{ margin: "0 10px" }}>{qty}</span>
-
-            <button onClick={() => changeQty(item, String(qty + 1))}>
-              +
+            {/* ADD */}
+            <button
+              onClick={() => handleAdd(item)}
+              style={{ marginTop: "10px" }}
+            >
+              Add to Cart
             </button>
           </div>
+        );
+      })}
 
-          {/* ADD */}
-          <button
-            onClick={() => handleAdd(item)}
-            style={{ marginTop: "10px" }}
-          >
-            Add to Cart
-          </button>
-        </div>
-      );
-    })}
+      <h3>Total: ₹{categoryTotal}</h3>
 
-    {/* TOTAL */}
-    <h3>Total: ₹{categoryTotal}</h3>
-
-    {/* MESSAGE */}
-    {message && (
-      <p style={{ color: "green", fontWeight: "bold" }}>
-        {message}
-      </p>
-    )}
-  </div>
-);
+      {message && (
+        <p style={{ color: "green", fontWeight: "bold" }}>
+          {message}
+        </p>
+      )}
+    </div>
+  );
 }

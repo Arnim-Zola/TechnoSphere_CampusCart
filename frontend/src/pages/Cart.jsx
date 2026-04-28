@@ -12,6 +12,8 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
+  const total = getCartTotal();
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Your Cart</h1>
@@ -30,7 +32,8 @@ const Cart = () => {
               style={{
                 border: "1px solid #ccc",
                 margin: "10px 0",
-                padding: "10px"
+                padding: "10px",
+                borderRadius: "8px"
               }}
             >
               <h3>{item.name}</h3>
@@ -70,17 +73,23 @@ const Cart = () => {
           ))}
 
           {/* TOTAL */}
-          <h2>Total: ₹{getCartTotal()}</h2>
+          <h2>Total: ₹{total}</h2>
 
           {/* CHECKOUT */}
           <button
-            onClick={() => navigate("/payment")}
+            onClick={() => navigate("/checkout")}
             style={{
-              padding: "10px 20px",
-              marginTop: "20px"
+              padding: "12px 24px",
+              marginTop: "20px",
+              background: "#2ecc71",
+              color: "#fff",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "16px"
             }}
           >
-            Proceed to Payment
+            Proceed to Checkout
           </button>
         </>
       )}
