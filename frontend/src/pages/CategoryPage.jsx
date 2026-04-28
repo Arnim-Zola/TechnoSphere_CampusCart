@@ -1,64 +1,153 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-
-const BASE_URL = "http://localhost:5000/api";
+import { useParams } from "react-router-dom";
 
 const CategoryPage = () => {
-  const { type } = useParams();
-  const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
+  const { category } = useParams();
 
-  const { addToCart } = useCart();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selection, setSelection] = useState({});
+
+  // 🔹 Dummy data (used if backend fails or empty)
+  const dummyData = [
+    {
+      _id: "1",
+      name: "Sample Item 1",
+      price: 20,
+      image: "https://via.placeholder.com/100",
+      description: "Demo product"
+    },
+    {
+      _id: "2",
+      name: "Sample Item 2",
+      price: 30,
+      image: "https://via.placeholder.com/100",
+      description: "Demo product"
+    }
+  ];
 
   useEffect(() => {
-    fetch(`${BASE_URL}/products?category=${type}`)
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error(err));
-  }, [type]);
+    fetchProducts();
+  }, [category]);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+
+      const res = await fetch(`http://localhost:5000/api/products?category=${category}`);
+      const data = await res.json();
+
+      // ✅ Use backend if available, else fallback
+      if (data && data.length > 0) {
+        setProducts(data);
+      } else {
+        setProducts(dummyData);
+      }
+
+    } catch (error) {
+      console.error("Backend not available, using dummy data");
+
+      // ✅ Fallback if API fails
+      setProducts(dummyData);
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>{type.toUpperCase()} PRODUCTS</h2>
+    <div>
+      <h2>{category.toUpperCase()} Products</h2>
 
-      {products.map((product, index) => (
-        <ProductCard key={index} product={product} addToCart={addToCart} navigate={navigate} />
-      ))}
-    </div>
-  );
-};
+      {loading && <p>Loading...</p>}
 
-// 🔥 Reusable Product Card (inspired from Odyssey)
-const ProductCard = ({ product, addToCart, navigate }) => {
-  const [qty, setQty] = useState(1);
+      <div>
+        {products.map((item) => (
+          <div
+            key={item._id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              margin: "10px"
+            }}
+          >
+            <img src={item.image} alt={item.name} width="100" />
+            <h3>{item.name}</h3>
+            <p>₹{item.price}</p>
+            <p>{item.description}</p>
 
-  return (
-    <div style={{
-      border: "1px solid #ccc",
-      margin: "15px 0",
-      padding: "15px",
-      borderRadius: "10px"
-    }}>
-      <h3>{product.name}</h3>
-      <p>₹{product.price}</p>
+            {/* BRAND */}
+            <select
+              value={selection[item._id]?.brand || ""}
+              onChange={(e) =>
+                setSelection({
+                  ...selection,
+                  [item._id]: {
+                    ...selection[item._id],
+                    brand: e.target.value
+                  }
+                })
+              }
+            >
+              <option value="">Select Brand</option>
+              <option value="Generic">Generic</option>
+              <option value="Classmate">Classmate</option>
+              <option value="Camlin">Camlin</option>
+            </select>
 
-      {/* 🔥 Quantity Stepper (from Odyssey idea) */}
-      <div style={{ marginBottom: "10px" }}>
-        <button onClick={() => setQty(Math.max(1, qty - 1))}>-</button>
-        <span style={{ margin: "0 10px" }}>{qty}</span>
-        <button onClick={() => setQty(qty + 1)}>+</button>
+            {/* COLOR */}
+            <select
+              value={selection[item._id]?.color || ""}
+              onChange={(e) =>
+                setSelection({
+                  ...selection,
+                  [item._id]: {
+                    ...selection[item._id],
+                    color: e.target.value
+                  }
+                })
+              }
+            >
+              <option value="">Select Color</option>
+              <option value="blue">Blue</option>
+              <option value="black">Black</option>
+              <option value="red">Red</option>
+            </select>
+
+            {/* QUANTITY */}
+            <select
+              value={selection[item._id]?.quantity || 1}
+              onChange={(e) =>
+                setSelection({
+                  ...selection,
+                  [item._id]: {
+                    ...selection[item._id],
+                    quantity: e.target.value
+                  }
+                })
+              }
+            >
+              {[1, 2, 3, 4, 5].map((q) => (
+                <option key={q} value={q}>
+                  {q}
+                </option>
+              ))}
+            </select>
+
+            {/* DEBUG BUTTON */}
+            <button
+              onClick={() => console.log("Selected:", selection[item._id])}
+              style={{
+                marginTop: "10px",
+                padding: "5px 10px",
+                cursor: "pointer"
+              }}
+            >
+              Add to Cart
+            </button>
+          </div>
+        ))}
       </div>
-
-      {/* 🔥 Add to Cart */}
-      <button
-        onClick={() => {
-          addToCart({ ...product, quantity: qty });
-          navigate("/cart");
-        }}
-      >
-        Add to Cart
-      </button>
     </div>
   );
 };
