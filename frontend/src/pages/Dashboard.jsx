@@ -1,27 +1,29 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+return (
+  <div>
+    <h1>CampusCart Dashboard</h1>
 
-const Dashboard = () => {
-  const navigate = useNavigate();
+    <button onClick={() => handleNavigation("writing")}>
+      Writing Essentials
+    </button>
 
-  const handleNavigation = (category) => {
-    console.log("Navigating to:", category); // ✅ debug
-    navigate(`/category/${category}`);
-  };
+    <button onClick={() => handleNavigation("correction")}>
+      Correction & Marking
+    </button>
 
-  return (
-    <div>
-      <h1>CampusCart Dashboard</h1>
+    <button onClick={() => handleNavigation("paper")}>
+      Paper Products
+    </button>
 
-      <button onClick={() => handleNavigation("writing")}>
-        Writing Essentials
-      </button>
+    <button onClick={() => handleNavigation("measuring")}>
+      Measuring Tools
+    </button>
 
-      <button onClick={() => handleNavigation("correction")}>
-        Correction & Marking
-      </button>
-    </div>
-  );
-};
+    <button onClick={() => handleNavigation("office")}>
+      Office / Utility
+    </button>
 
-export default Dashboard;
+    <button onClick={() => navigate("/report")}>
+      Report / Print
+    </button>
+  </div>
+);
