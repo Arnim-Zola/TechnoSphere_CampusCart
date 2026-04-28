@@ -91,10 +91,10 @@ npm start
 
 ## Contributors
 
-- Your Name  
-- Team Member 1  
-- Team Member 2  
-- Team Member 3  
+- Mohammed Sahil ( Arnim-Zola )
+- Madhava K S Puranik ( Madhavaks7 )   
+- Nandan A Divate  ( NandanDivate )
+- Mithun Kumar B V  ( mithungit56 )
 
 
 ## License
