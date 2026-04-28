@@ -4,7 +4,26 @@ export default function Stationery() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ padding: 20, textAlign: "center" }}>
+    <div style={{ padding: 20, textAlign: "center", position: "relative" }}>
+      
+      {/* 🛒 Cart Button */}
+      <button
+        onClick={() => navigate("/cart")}
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          padding: "10px 15px",
+          background: "#2ecc71",
+          color: "#fff",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer"
+        }}
+      >
+        🛒 Cart
+      </button>
+
       <h2>CampusCart</h2>
 
       <div style={{ marginTop: "30px" }}>
@@ -25,7 +44,7 @@ export default function Stationery() {
           Corrections
         </button>
 
-        {/* 🔥 Report / Print */}
+        {/* Report / Print */}
         <button
           onClick={() => navigate("/report")}
           style={{ margin: "10px", padding: "15px 30px" }}
@@ -33,10 +52,17 @@ export default function Stationery() {
           Report / Print
         </button>
 
-        <button onClick={() => navigate("/category/paper")}>Paper</button>
-<button onClick={() => navigate("/category/measuring")}>Measuring</button>
-<button onClick={() => navigate("/category/office")}>Office</button>
+        <button onClick={() => navigate("/category/paper")}>
+          Paper
+        </button>
 
+        <button onClick={() => navigate("/category/measuring")}>
+          Measuring
+        </button>
+
+        <button onClick={() => navigate("/category/office")}>
+          Office
+        </button>
       </div>
     </div>
   );

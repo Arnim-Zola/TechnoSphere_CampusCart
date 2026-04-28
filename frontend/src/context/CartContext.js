@@ -8,24 +8,24 @@ export const useCart = () => {
   return useContext(CartContext);
 };
 
-// Provider (FIXED: named export)
+// Provider
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  // Add item (Odyssey style — no merging)
+  // ✅ FIXED: Add item with correct quantity
   const addToCart = (product) => {
     setCartItems((prev) => [
       ...prev,
       {
         name: product.name,
         price: product.price,
-        quantity: 1,
+        quantity: Number(product.quantity) || 1, // 🔥 FIX HERE
         image: product.image
       }
     ]);
   };
 
-  // Remove using index
+  // Remove item
   const removeFromCart = (index) => {
     setCartItems((prev) =>
       prev.filter((_, i) => i !== index)
@@ -51,6 +51,11 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  // Clear cart
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -58,7 +63,8 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantity,
-        getCartTotal
+        getCartTotal,
+        clearCart
       }}
     >
       {children}
