@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CartContext } from "../context/CartContext";
+import { useCart } from "../context/CartContext"; // ✅ FIXED
 
 const BASE_URL = "http://localhost:5000/api";
 
 const CategoryPage = () => {
   const { type } = useParams();
 
-  const { addToCart, cartItems } = useContext(CartContext); // ✅ cart access
+  const { addToCart, cartItems } = useCart(); // ✅ FIXED
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ const CategoryPage = () => {
     setLoading(false);
   };
 
-  // 🔥 DEBUG (you can remove later)
+  // 🔥 DEBUG
   console.log("Cart:", cartItems);
 
   return (
@@ -63,10 +63,12 @@ const CategoryPage = () => {
           <h3>{product.name}</h3>
           <p>₹{product.price}</p>
 
-          {/* 🔥 ADD TO CART BUTTON */}
-          <button onClick={() => addToCart(product)}>
-            Add to Cart
-          </button>
+          <button onClick={() => {
+  console.log("CLICKED");   // 🔥 debug
+  addToCart(product);
+}}>
+  Add to Cart
+</button>
         </div>
       ))}
     </div>
