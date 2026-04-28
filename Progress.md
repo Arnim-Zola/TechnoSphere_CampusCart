@@ -1,144 +1,174 @@
-# 🚀 CampusCart – Development Progress (Evaluation 2)
+# 🚀 CampusCart – Project Progress
 
-## 📌 Phase 0: Ideation and Planning (Completed)
-
-* **Project Idea:** CampusCart – Campus Pre-Order and Shopping Platform
-* **Problem Identified:** Long queues and inefficient manual ordering systems in campuses
-* **Proposed Solution:** Centralized web platform for pre-ordering printouts and stationery
-* **Technology Stack:** MERN (MongoDB, Express, React, Node.js)
-
-### 🔑 Core Features
-
-* Pre-order system
-
-* Document upload (PDF support)
-
-* Order management
-
-* Responsive user interface
-
-* Team formed and roles assigned
+## 📌 Project Overview
+CampusCart is a web-based pre-order platform designed to streamline campus printing and stationery purchases. The system reduces long queues and manual workflows by allowing students to browse, select, and order items in advance, with a unified checkout and receipt system.
 
 ---
 
-## 🛠️ Phase 1: Repository Setup (Completed)
-
-* GitHub repository created
-* `README.md` added with project description and tech stack
-* Project structure initialized:
-
-  * `backend/`
-  * `frontend/`
-* Version control and collaboration configured
-* Branch-based workflow established (`feature/dashboard`)
+## 🧠 Problem Statement
+Students face delays due to:
+- Long queues for printouts and stationery
+- Manual ordering processes
+- Lack of pre-order or scheduling system
+- Inefficient workflow for both students and staff
 
 ---
 
-## ⚙️ Phase 2: Environment Setup (Completed)
-
-* Backend setup using Node.js and Express
-* Frontend initialized using React (Create React App)
-* Required dependencies installed
-* Environment variables configured using dotenv
-* Successfully ran both frontend and backend servers
-
----
-
-## 🧩 Phase 3: Backend Development (Partially Completed)
-
-* Express server and routing configured
-* MongoDB connected using Mongoose
-* Product schema designed
-
-### 🔌 Implemented APIs
-
-* `GET /api/products`
-
-* `POST /api/products`
-
-* APIs tested using browser/Postman
-
-* Sample product data inserted into database
+## 💡 Solution Implemented
+CampusCart provides:
+- Category-based stationery browsing
+- Print upload system for document services
+- Centralized cart system
+- Seamless checkout experience
+- Digital receipt with PDF export
 
 ---
 
-## 🎨 Phase 4: Frontend Development (Partially Completed)
+## 🏗️ System Architecture
 
-### 📄 Pages Developed
+### Frontend
+- React (Create React App)
+- React Router for navigation
+- Context API for global cart state
 
-* Dashboard
-* Category Page
-* Cart Page
-* Print Page (PDF Upload System)
-
-### ⚡ Features Implemented
-
-* Routing using React Router
-* API integration with backend
-* Dynamic product fetching by category
-* Product display UI
-* Loading and empty state handling
+### Backend (Planned / Partial)
+- Node.js + Express
+- MongoDB (future integration)
 
 ---
 
-## 🛒 Phase 5: Core Feature Implementation (In Progress)
+## 🔁 Application Flow
 
-### 🧠 Cart System (Context API)
+Dashboard → Category → Add to Cart → Cart → Checkout → Receipt → Print PDF
 
-* Global state management implemented
-* Add to Cart functionality
-* Remove from Cart
-* Quantity update
-* Total price calculation
-* Cart UI fully functional
-
-### 🖨️ Print System (Key Feature)
-
-* PDF upload functionality implemented
-* Auto page detection using PDF.js
-* Print configuration options:
-
-  * Print type (Black & White / Color)
-  * Number of copies
-* Dynamic pricing based on pages and copies
-* Print jobs added to cart
-
-### 🔗 Integration
-
-* Mixed cart support:
-
-  * Stationery items
-  * Print jobs
 
 ---
 
-## 🧪 Phase 6: Integration and Testing (Pending)
+## 📦 Features Implemented
 
-### 📋 Planned Tasks
-
-* Ensure smooth frontend-backend data flow
-* Test complete ordering workflow
-* Fix UI and functional bugs
-* Validate cart and order system
-
----
-
-## 🚀 Phase 7: Finalization and Deployment (Pending)
-
-### 📋 Planned Tasks
-
-* Improve UI/UX design
-* Implement checkout/payment system
-* Prepare project documentation
-* Deploy application
-* Final testing and presentation
+### 🧭 Dashboard
+- Navigation-based UI
+- Category routing using `useNavigate`
+- Covers all categories:
+  - Writing
+  - Correction
+  - Paper
+  - Measuring
+  - Office
+  - Print / Report
 
 ---
 
-## 🧠 Notes
+### 📂 Category System
+- Dynamic routing using `useParams`
+- Item customization:
+  - Pen → Type + Color
+  - Pencil → Type
+  - Mechanical Pencil → Size
+- Quantity selector with increment/decrement
+- Dynamic pricing logic
+- Add-to-cart integration
 
-* Project follows a modular MERN architecture
-* Focus on scalability and maintainability
-* Development is iterative with continuous debugging
-* Regular commits maintained for progress tracking
-* Clean and structured coding practices followed
+---
+
+### 🛒 Cart System
+- Implemented using Context API (`useCart`)
+- Features:
+  - Add items
+  - Remove items
+  - Update quantity
+  - Real-time total calculation
+- Unified cart supports:
+  - Stationery items
+  - Print items
+
+---
+
+### 💳 Checkout System
+- Multiple payment methods:
+  - UPI
+  - Card
+  - Net Banking
+  - Pay at Counter
+- Dynamic total fetched from CartContext
+- Payment simulation (frontend-based)
+- Clean UI layout with order summary
+
+---
+
+### 🧾 Receipt System
+- Fully structured receipt UI
+- Includes:
+  - Order ID
+  - Date
+  - Payment method
+  - Itemized breakdown
+  - Total paid
+  - Transaction ID
+- Print / Save as PDF functionality using browser print API
+- Cleaned UX by removing unnecessary pickup slot logic
+
+---
+
+## 🔧 Bugs Fixed & Improvements
+
+### 🐞 Critical Fixes
+- Fixed quantity mismatch between category and cart
+- Fixed `clearCart is not a function` issue
+- Fixed undefined total in checkout
+- Fixed routing issues (App.js structure)
+
+### 🧹 UX Improvements
+- Removed pickup slot for simplicity
+- Simplified checkout flow
+- Improved navigation between pages
+- Cleaned unused dependencies and code
+
+---
+
+## 🤝 Collaboration & Integration
+
+- Integrated features inspired from teammate Nandan’s `Cart_Payments` branch
+- Performed selective code extraction instead of full merge
+- Refactored code to match existing architecture
+- Ensured consistent UI and data flow across modules
+
+---
+
+## 🧪 Testing & Validation
+
+- Verified complete user flow:
+  - Add items → Cart → Checkout → Receipt
+- Tested:
+  - Quantity updates
+  - Total calculations
+  - Navigation
+  - Payment simulation
+  - PDF generation
+
+---
+
+## 📦 Current Status
+
+✔ Fully functional frontend system  
+✔ End-to-end flow implemented  
+✔ Clean UI and UX  
+✔ No major bugs  
+✔ Ready for hackathon demo  
+
+---
+
+## 🎯 Future Enhancements
+
+- 🔐 User authentication system
+- 🗄️ Backend order storage (MongoDB)
+- 📊 Admin dashboard for order management
+- 🔔 Notification system
+- 💳 Real payment gateway integration (Razorpay)
+- 🎨 UI/UX enhancements and animations
+
+---
+
+## 🏁 Conclusion
+
+CampusCart successfully demonstrates a practical and scalable solution for campus-based ordering systems. The project integrates real-world workflows with a clean, user-friendly interface and lays a strong foundation for future full-stack expansion.
