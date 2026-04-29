@@ -8,7 +8,6 @@ CampusCart is a premium stationery and campus essentials e-commerce platform bui
 - **Frontend**: Next.js 14, React, TailwindCSS, Framer Motion
 - **Backend/Database**: Firebase (Auth, Firestore, Storage)
 - **Icons**: Lucide React
-- **Payments**: Razorpay (Integration Ready)
 
 ## 🛠️ Getting Started (Local Development)
 
