@@ -8,6 +8,7 @@ import StationeryPage from "./pages/StationeryPage";
 import CartPage from "./pages/CartPage";
 import PaymentPage from "./pages/PaymentPage";
 import ReceiptPage from "./pages/ReceiptPage";
+import PrintPage from "./pages/Print";
 import AdminDashboard from "./pages/AdminDashboard";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -17,6 +18,7 @@ function App() {
     <Routes>
       {/* 🔐 AUTH FLOW */}
       <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/intro" element={<IntroPage />} />
 
       {/* 🛍️ MAIN APP (STUDENT) */}
@@ -66,6 +68,14 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/print"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <PrintPage />
+          </ProtectedRoute>
+        }
+      />
 
       {/* 🧑‍💼 ADMIN */}
       <Route
@@ -78,7 +88,7 @@ function App() {
       />
 
       {/* ❌ FALLBACK */}
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<h1>404 Page Not Found</h1>} />
     </Routes>
   );
 }

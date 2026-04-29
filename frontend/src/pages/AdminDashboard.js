@@ -321,10 +321,9 @@ const S = {
 };
 
 /* ─── Order card sub-component ──────────────────────────────────────────── */
-function OrderCard({ order, onUpdateStatus }) {
+function OrderCard({ order, onMarkReady }) {
   const [cardHover, setCardHover] = useState(false);
-  const [btn1Hover, setBtn1Hover] = useState(false);
-  const [btn2Hover, setBtn2Hover] = useState(false);
+  const [btnHover, setBtnHover] = useState(false);
 
   const shortId = (order._id || order.id || "")
     .toString()
@@ -382,27 +381,17 @@ function OrderCard({ order, onUpdateStatus }) {
 
       {/* Action buttons — contextual per status, same updateStatus call */}
       <div style={S.actions}>
-        {status === "pending" && (
+        {status !== "ready" ? (
           <button
-            style={S.actionBtn("printing", btn1Hover)}
-            onMouseEnter={() => setBtn1Hover(true)}
-            onMouseLeave={() => setBtn1Hover(false)}
-            onClick={() => onUpdateStatus(order._id || order.id, "printing")}
+            type="button"
+            style={S.actionBtn("ready", btnHover)}
+            onMouseEnter={() => setBtnHover(true)}
+            onMouseLeave={() => setBtnHover(false)}
+            onClick={() => onMarkReady(order._id || order.id)}
           >
-            ▶ Mark as Printing
+            ▶ Mark as Ready
           </button>
-        )}
-        {status === "printing" && (
-          <button
-            style={S.actionBtn("ready", btn2Hover)}
-            onMouseEnter={() => setBtn2Hover(true)}
-            onMouseLeave={() => setBtn2Hover(false)}
-            onClick={() => onUpdateStatus(order._id || order.id, "ready")}
-          >
-            ✓ Mark as Ready
-          </button>
-        )}
-        {status === "ready" && (
+        ) : (
           <span style={{ fontSize: "12px", color: T.ready.fg, fontWeight: 600 }}>
             ✓ Ready for pickup
           </span>
@@ -434,15 +423,17 @@ export default function AdminDashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ UNCHANGED
-  const updateStatus = async (id, newStatus) => {
+  // ✅ Admin status action
+  const markReady = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/orders/${id}`, {
-        status: newStatus,
+      console.log("markReady called for ID:", id);
+      const response = await axios.patch(`http://localhost:5000/api/orders/${id}/status`, {
+        status: "ready",
       });
+      console.log("Status update response:", response.data);
       fetchOrders();
     } catch (err) {
-      console.error("Failed to update status:", err);
+      console.error("Failed to mark order ready:", err);
     }
   };
 
@@ -518,7 +509,7 @@ export default function AdminDashboard() {
               <OrderCard
                 key={order._id || order.id}
                 order={order}
-                onUpdateStatus={updateStatus}
+                onMarkReady={markReady}
               />
             ))}
           </div>

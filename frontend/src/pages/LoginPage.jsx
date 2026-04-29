@@ -1,114 +1,197 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API_BASE = "http://localhost:5000";
 
 const LoginPage = () => {
-  const [role, setRole] = useState("student");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const attemptLogin = async (loginEmail, loginPassword, skipNavigation = false) => {
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await axios.post(`${API_BASE}/api/auth/login`, {
+        email: loginEmail,
+        password: loginPassword,
+      });
+
+      const { role } = response.data;
+      sessionStorage.setItem("role", role);
+      sessionStorage.setItem("user", loginEmail);
+
+      if (!skipNavigation) {
+        if (role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/intro");
+        }
+      }
+
+      return role;
+    } catch (error) {
+      console.log(error.response?.data);
+      const serverMessage = error.response?.data?.message;
+      setMessage(serverMessage || "Unable to authenticate. Please try again.");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const normalizedRole = role === "admin" ? "admin" : "student";
-    sessionStorage.setItem("role", normalizedRole);
-    navigate("/intro");
+    setMessage("");
+
+    if (!email.trim() || !password) {
+      setMessage("Email and password are required.");
+      return;
+    }
+
+    if (isNewUser) {
+      setLoading(true);
+
+      try {
+        const response = await axios.post(`${API_BASE}/api/auth/register`, {
+          email: email.trim(),
+          password,
+        });
+
+        alert("Signup successful. Please log in.");
+        setIsNewUser(false);
+        setMessage("");
+        setPassword("");
+      } catch (error) {
+        console.log(error.response?.data);
+        const serverMessage = error.response?.data?.message;
+        setMessage(serverMessage || "Unable to authenticate. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+
+      return;
+    }
+
+    await attemptLogin(email.trim(), password);
+  };
+
+  const handleAdminQuickLogin = async () => {
+    const quickEmail = "admin@gmail.com";
+    const quickPassword = "admin123";
+
+    setIsNewUser(false);
+    setEmail(quickEmail);
+    setPassword(quickPassword);
+
+    const role = await attemptLogin(quickEmail, quickPassword, true);
+    if (!role) {
+      return;
+    }
+
+    if (role === "admin" || quickEmail.toLowerCase().includes("admin")) {
+      sessionStorage.setItem("role", "admin");
+      navigate("/admin");
+    } else {
+      navigate("/intro");
+    }
   };
 
   return (
     <div style={styles.container}>
-      <form style={styles.form} onSubmit={handleLogin}>
-
-        {/* Brand mark */}
+      <form style={styles.form} onSubmit={handleSubmit}>
         <div style={styles.logoRow}>
           <div style={styles.logoMark}>CC</div>
           <span style={styles.logoText}>CampusCart</span>
         </div>
 
-        <h1 style={styles.heading}>Welcome back</h1>
-        <p style={styles.sub}>Sign in to access your campus marketplace</p>
+        <h1 style={styles.heading}>{isNewUser ? "Create your account" : "Welcome back"}</h1>
+        <p style={styles.sub}>
+          {isNewUser
+            ? "Sign up with your email and password to use CampusCart"
+            : "Log in to access your campus marketplace"}
+        </p>
 
-        <span style={styles.label}>Continue as</span>
+        <label style={styles.fieldLabel} htmlFor="email">
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+          placeholder="you@example.edu"
+        />
 
-        {/* Role selector — keeps original <select> hidden for form state */}
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          style={styles.hiddenSelect}
-          aria-label="Select role"
-        >
-          <option value="student">Student</option>
-          <option value="admin">Admin</option>
-        </select>
+        <label style={styles.fieldLabel} htmlFor="password">
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}
+          placeholder="Enter your password"
+        />
 
-        {/* Visual role cards */}
-        <div style={styles.roleGrid}>
-          {[
-            { value: "student", name: "Student", desc: "Browse & purchase" },
-            { value: "admin",   name: "Admin",   desc: "Manage platform"  },
-          ].map(({ value, name, desc }) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => setRole(value)}
-              style={{
-                ...styles.roleBtn,
-                ...(role === value ? styles.roleBtnActive : {}),
-              }}
-            >
-              <RoleIcon role={value} active={role === value} />
-              <span style={{ ...styles.roleName, ...(role === value ? styles.roleNameActive : {}) }}>
-                {name}
-              </span>
-              <span style={{ ...styles.roleDesc, ...(role === value ? styles.roleDescActive : {}) }}>
-                {desc}
-              </span>
-            </button>
-          ))}
+        <div style={styles.adminHint}>
+          Tip: Use an email containing <strong>'admin'</strong> (e.g.,{' '}
+          <a href="mailto:admin@gmail.com" style={styles.adminLink}>
+            admin@gmail.com
+          </a>) to access Admin Panel
         </div>
 
+        {message && <div style={styles.message}>{message}</div>}
+
+        <button type="submit" style={styles.submitBtn} disabled={loading}>
+          {loading ? "Please wait..." : isNewUser ? "Sign Up" : "Log In"}
+        </button>
+
         <button
-          type="submit"
-          style={styles.submitBtn}
-          onMouseEnter={e => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-          onMouseLeave={e => { e.currentTarget.style.opacity = "1";    e.currentTarget.style.transform = "translateY(0)";   }}
-          onMouseDown={e  => { e.currentTarget.style.transform = "translateY(0)"; }}
+          type="button"
+          className="admin-quick-login"
+          onClick={handleAdminQuickLogin}
+          style={styles.adminQuickLogin}
+          disabled={loading}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#1f2937";
+            e.currentTarget.style.borderColor = "#334155";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#111827";
+            e.currentTarget.style.borderColor = "#24303f";
+          }}
         >
-          Continue
+          Login as Admin
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setIsNewUser((prev) => !prev);
+            setMessage("");
+          }}
+          style={styles.toggleBtn}
+        >
+          {isNewUser ? "Already have an account? Log in" : "New user? Sign up"}
         </button>
 
         <div style={styles.divider} />
-        <p style={styles.footer}>Need help? <span style={styles.footerLink}>Contact support</span></p>
+        <p style={styles.footer}>
+          Need help? <span style={styles.footerLink}>Contact support</span>
+        </p>
       </form>
     </div>
   );
 };
 
-/* ─── Tiny icon component ───────────────────────────── */
-const RoleIcon = ({ role, active }) => {
-  const stroke = active ? "#6366f1" : "#475569";
-  return (
-    <div style={{ width: 28, height: 28, borderRadius: 6,
-      background: active ? "#1e1b4b" : "#131720",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      transition: "background 180ms ease",
-    }}>
-      {role === "student" ? (
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M8 2L14 5.5V7C14 10.5 11.5 13.5 8 14.5C4.5 13.5 2 10.5 2 7V5.5L8 2Z"
-            stroke={stroke} strokeWidth="1.2" />
-          <circle cx="8" cy="7" r="2" fill={stroke} />
-        </svg>
-      ) : (
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <rect x="2" y="2" width="5" height="5" rx="1" stroke={stroke} strokeWidth="1.2" />
-          <rect x="9" y="2" width="5" height="5" rx="1" stroke={stroke} strokeWidth="1.2" />
-          <rect x="2" y="9" width="5" height="5" rx="1" stroke={stroke} strokeWidth="1.2" />
-          <rect x="9" y="9" width="5" height="5" rx="1" stroke={stroke} strokeWidth="1.2" />
-        </svg>
-      )}
-    </div>
-  );
-};
-
-/* ─── Styles ─────────────────────────────────────────── */
 const styles = {
   container: {
     minHeight: "100vh",
@@ -164,74 +247,79 @@ const styles = {
     lineHeight: 1.2,
   },
   sub: {
-    margin: "0 0 36px",
+    margin: "0 0 28px",
     fontSize: 14,
     color: "#4b5a72",
     lineHeight: 1.5,
   },
-  label: {
+  fieldLabel: {
     fontSize: 12,
     fontWeight: 500,
-    color: "#4b5a72",
-    letterSpacing: "0.6px",
+    color: "#94a3b8",
+    marginBottom: 8,
     textTransform: "uppercase",
-    marginBottom: 10,
+    letterSpacing: "0.6px",
   },
-  hiddenSelect: {
-    display: "none",
-  },
-  roleGrid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: 10,
-    marginBottom: 28,
-  },
-  roleBtn: {
+  input: {
     background: "#131720",
     border: "1px solid #1e2535",
-    borderRadius: 10,
+    borderRadius: 12,
+    color: "#f8fafc",
     padding: "14px 16px",
+    marginBottom: 18,
+    fontSize: 14,
+    outline: "none",
+  },
+  adminHint: {
+    fontSize: 12,
+    color: "#9ca3af",
+    lineHeight: 1.5,
+    marginBottom: 16,
+  },
+  adminLink: {
+    color: "#7c3aed",
+    textDecoration: "none",
+  },
+  adminQuickLogin: {
+    width: "100%",
+    padding: "12px 20px",
+    borderRadius: 12,
+    border: "1px solid #24303f",
+    background: "#111827",
+    color: "#cbd5e1",
+    fontFamily: "inherit",
+    fontSize: 14,
+    fontWeight: 600,
     cursor: "pointer",
-    display: "flex",
-    flexDirection: "column",
-    gap: 6,
-    textAlign: "left",
-    transition: "border-color 180ms ease, background 180ms ease",
+    marginBottom: 12,
+    transition: "background 150ms ease, border-color 150ms ease",
   },
-  roleBtnActive: {
-    borderColor: "#4f46e5",
-    background: "#13163a",
-  },
-  roleName: {
+  message: {
+    color: "#f87171",
     fontSize: 13,
-    fontWeight: 500,
-    color: "#94a3b8",
-    lineHeight: 1,
-  },
-  roleNameActive: {
-    color: "#a5b4fc",
-  },
-  roleDesc: {
-    fontSize: 11,
-    color: "#334155",
-    lineHeight: 1.3,
-  },
-  roleDescActive: {
-    color: "#4338ca",
+    marginBottom: 18,
   },
   submitBtn: {
     width: "100%",
     padding: "13px 20px",
-    borderRadius: 10,
+    borderRadius: 12,
     border: "none",
     background: "linear-gradient(135deg, #4f46e5, #3b82f6)",
     color: "#fff",
     fontFamily: "inherit",
-    fontSize: 14,
-    fontWeight: 500,
+    fontSize: 15,
+    fontWeight: 600,
     cursor: "pointer",
-    transition: "opacity 180ms ease, transform 180ms ease",
-    letterSpacing: "0.1px",
+    marginBottom: 12,
+  },
+  toggleBtn: {
+    background: "transparent",
+    border: "1px solid #334155",
+    borderRadius: 12,
+    color: "#94a3b8",
+    padding: "12px 16px",
+    cursor: "pointer",
+    fontSize: 14,
   },
   divider: {
     height: 1,
@@ -239,13 +327,13 @@ const styles = {
     margin: "24px 0",
   },
   footer: {
-    textAlign: "center",
-    fontSize: 12,
-    color: "#2d3a50",
     margin: 0,
+    fontSize: 13,
+    color: "#64748b",
+    textAlign: "center",
   },
   footerLink: {
-    color: "#4f46e5",
+    color: "#8b96b4",
     cursor: "pointer",
   },
 };

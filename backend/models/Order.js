@@ -30,6 +30,10 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "pending",
     },
+    isNotified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

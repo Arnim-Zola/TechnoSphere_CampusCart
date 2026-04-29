@@ -8,8 +8,11 @@ console.log("🔥 SERVER FILE LOADED");
 // ✅ Import routes
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes"); // ⭐ IMPORTANT
+const authRoutes = require("./routes/authRoutes");
 
-console.log("✅ Routes imported");
+console.log("✅ Routes imported", {
+  authRouter: authRoutes.stack ? authRoutes.stack.map((layer) => layer.route?.path) : null,
+});
 
 const app = express();
 
@@ -24,12 +27,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/campuscart")
 // ✅ Use routes
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes); // ⭐ CRITICAL
+app.use("/api/auth", authRoutes);
 
 console.log("✅ Routes mounted");
 
 // ✅ Root test
 app.get("/", (req, res) => {
-res.send("API Running");
+  res.send("API Running");
 });
 
 // ✅ Server start

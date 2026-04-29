@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
+import CartAccessButton from "../components/CartAccessButton";
 
 /* ─── Design tokens ────────────────────────────────────────────────────── */
 const T = {
@@ -612,6 +613,7 @@ function Print() {
       {toast.show && (
         <div style={S.toast(toast.type)}>{toast.message}</div>
       )}
+      <CartAccessButton />
     </>
   );
 }

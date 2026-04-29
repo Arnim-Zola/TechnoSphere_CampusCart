@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CartAccessButton from "../components/CartAccessButton";
 
 /* ─── Design tokens ─────────────────────────────────────────────────────── */
 const T = {
@@ -124,6 +125,108 @@ const S = {
     fontSize: "12px",
     fontWeight: 600,
     color: T.textSub,
+  },
+  topRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: "14px",
+    position: "relative",
+  },
+  bellWrapper: {
+    position: "relative",
+  },
+  bellButton: {
+    position: "relative",
+    width: "42px",
+    height: "42px",
+    borderRadius: "14px",
+    border: `1px solid ${T.border}`,
+    background: T.surfaceAlt,
+    color: T.text,
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "18px",
+    transition: "all 0.18s ease",
+  },
+  bellIcon: {
+    lineHeight: 1,
+  },
+  bellBadge: {
+    position: "absolute",
+    top: "6px",
+    right: "6px",
+    minWidth: "18px",
+    height: "18px",
+    borderRadius: "999px",
+    background: "#f87171",
+    color: "#fff",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "10px",
+    fontWeight: 700,
+    padding: "0 5px",
+  },
+  bellDropdown: {
+    position: "absolute",
+    right: 0,
+    top: "54px",
+    width: "320px",
+    maxHeight: "360px",
+    overflowY: "auto",
+    borderRadius: "18px",
+    padding: "14px",
+    background: T.surface,
+    border: `1px solid ${T.border}`,
+    boxShadow: "0 24px 60px rgba(0,0,0,0.35)",
+    zIndex: 200,
+  },
+  bellHeader: {
+    fontSize: "12px",
+    color: T.textMuted,
+    fontWeight: 700,
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    marginBottom: "10px",
+  },
+  bellEmpty: {
+    padding: "18px 12px",
+    borderRadius: "14px",
+    background: "rgba(255,255,255,0.03)",
+    color: T.textMuted,
+    fontSize: "13px",
+    textAlign: "center",
+  },
+  bellItem: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "12px",
+    border: "none",
+    background: "transparent",
+    textAlign: "left",
+    padding: "12px 10px",
+    borderRadius: "14px",
+    cursor: "pointer",
+    color: T.text,
+    transition: "background 0.15s ease",
+  },
+  bellItemNew: {
+    background: "rgba(124,106,247,0.12)",
+  },
+  bellItemText: {
+    fontSize: "13px",
+    color: T.text,
+    lineHeight: 1.4,
+    flex: 1,
+    paddingRight: "10px",
+  },
+  bellItemArrow: {
+    fontSize: "14px",
+    color: T.accentSoft,
   },
 
   /* Main */
@@ -311,69 +414,93 @@ function CategoryCard({ cat, onClick }) {
 export default function Dashboard() {
   const navigate = useNavigate();
 
-  // ✅ UNCHANGED — all notification logic
   const [notifications, setNotifications] = useState([]);
-  const shownOrderIdsRef = useRef(new Set());
-  const timeoutsRef = useRef([]);
+  const [bellOpen, setBellOpen] = useState(false);
+  const [highlightedIds, setHighlightedIds] = useState(new Set());
+  const previousNotificationIds = useRef(new Set());
+
+  const playNotificationSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.value = 780;
+      gain.gain.value = 0.12;
+      oscillator.connect(gain);
+      gain.connect(audioCtx.destination);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.12);
+    } catch (error) {
+      console.debug("Notification sound unavailable:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchReadyOrders = async () => {
+    const fetchNotifications = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/orders");
-        if (!response.ok) return;
+        console.log("polling notifications");
+        const response = await fetch("http://localhost:5000/api/orders/notifications");
+        if (!response.ok) {
+          console.error("notifications fetch failed", response.status);
+          return;
+        }
 
         const data = await response.json();
-        const orders = Array.isArray(data) ? data : [];
+        console.log("notifications fetched", data);
+        if (!Array.isArray(data)) return;
 
-        orders
-          .filter(
-            (order) =>
-              order?.status === "ready" &&
-              order?.user?.toString().toLowerCase() === "student"
-          )
-          .forEach((order) => {
-            const orderId = order._id || order.id;
-            if (!orderId) return;
-            if (shownOrderIdsRef.current.has(orderId.toString())) return;
+        const incomingIds = new Set(data.map((order) => order._id || order.id));
+        const newIds = data
+          .map((order) => order._id || order.id)
+          .filter((id) => !previousNotificationIds.current.has(id));
 
-            shownOrderIdsRef.current.add(orderId.toString());
+        if (newIds.length > 0 && previousNotificationIds.current.size > 0) {
+          playNotificationSound();
+          setHighlightedIds(new Set(newIds));
+        }
 
-            const message = `Your order #${orderId
-              .toString()
-              .slice(-8)
-              .toUpperCase()} is ready for pickup`;
-
-            setNotifications((prev) => [
-              ...prev,
-              { id: orderId.toString(), message },
-            ]);
-
-            const timeout = window.setTimeout(() => {
-              setNotifications((prev) =>
-                prev.filter((n) => n.id !== orderId.toString())
-              );
-            }, 10000);
-
-            timeoutsRef.current.push(timeout);
-          });
+        previousNotificationIds.current = incomingIds;
+        setNotifications(data);
       } catch (error) {
-        console.error("Unable to fetch ready orders:", error);
+        console.error("Unable to fetch notifications:", error);
       }
     };
 
-    fetchReadyOrders();
-    const intervalId = window.setInterval(fetchReadyOrders, 3000);
-
-    return () => {
-      window.clearInterval(intervalId);
-      timeoutsRef.current.forEach(window.clearTimeout);
-      timeoutsRef.current = [];
-    };
+    fetchNotifications();
+    const intervalId = window.setInterval(fetchNotifications, 3000);
+    return () => window.clearInterval(intervalId);
   }, []);
 
-  // ✅ UNCHANGED
-  const dismissNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  const handleNotificationClick = async (order) => {
+    try {
+      const orderId = order._id || order.id;
+      await fetch(`http://localhost:5000/api/orders/${orderId}/notify`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      setNotifications((prev) => prev.filter((item) => (item._id || item.id) !== orderId));
+      previousNotificationIds.current.delete(orderId);
+      setHighlightedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(orderId);
+        return next;
+      });
+      setBellOpen(false);
+
+      const cartItems = [...(order.stationeryItems || []), ...(order.documents || [])];
+      navigate("/receipt", {
+        state: {
+          order,
+          cartItems,
+          total: order.totalAmount,
+          paymentMethod: order.paymentMethod,
+        },
+      });
+    } catch (error) {
+      console.error("Failed to mark notification seen:", error);
+    }
   };
 
   // ✅ UNCHANGED navigation logic
@@ -383,7 +510,7 @@ export default function Dashboard() {
 
   const handleCardClick = (cat) => {
     if (cat.type === "__report") {
-      navigate("/report");
+      navigate("/print");
     } else {
       handleNavigation(cat.type);
     }
@@ -406,28 +533,56 @@ export default function Dashboard() {
         {/* ── Top bar ── */}
         <header style={S.topBar}>
           <h1 style={S.logo}>CampusCart</h1>
-          <div style={S.userBadge}>
-            <div style={S.userAvatar}>S</div>
-            <span style={S.userLabel}>Student</span>
+          <div style={S.topRight}>
+            <div style={S.bellWrapper}>
+              <button
+                style={S.bellButton}
+                onClick={() => setBellOpen((prev) => !prev)}
+                aria-label="Open notifications"
+              >
+                <span style={S.bellIcon}>🔔</span>
+                {notifications.length > 0 && (
+                  <span style={S.bellBadge}>{notifications.length}</span>
+                )}
+              </button>
+
+              {bellOpen && (
+                <div style={S.bellDropdown}>
+                  <div style={S.bellHeader}>Pickup notifications</div>
+                  {notifications.length === 0 ? (
+                    <div style={S.bellEmpty}>No new notifications.</div>
+                  ) : (
+                    notifications.map((order) => {
+                      const orderId = order._id || order.id;
+                      const isNew = highlightedIds.has(orderId);
+                      const displayNumber = order.orderNumber || orderId.toString().slice(-8).toUpperCase();
+                      return (
+                        <button
+                          key={orderId}
+                          style={{
+                            ...S.bellItem,
+                            ...(isNew ? S.bellItemNew : {}),
+                          }}
+                          onClick={() => handleNotificationClick(order)}
+                        >
+                          <div style={S.bellItemText}>
+                            Your order <strong>#{displayNumber}</strong> is ready for pickup
+                          </div>
+                          <span style={S.bellItemArrow}>→</span>
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div style={S.userBadge}>
+              <div style={S.userAvatar}>S</div>
+              <span style={S.userLabel}>Student</span>
+            </div>
           </div>
         </header>
-
-        {/* ── Notifications (dark-themed, logic unchanged) ── */}
-        <div style={NS.container}>
-          {notifications.map((notification) => (
-            <div key={notification.id} style={NS.toast}>
-              <div style={NS.toastLeft}>
-                <span style={NS.toastDot} />
-                <span style={NS.toastMessage}>{notification.message}</span>
-              </div>
-              <button
-                onClick={() => dismissNotification(notification.id)}
-                style={NS.toastClose}
-                aria-label="Close notification"
-              >✕</button>
-            </div>
-          ))}
-        </div>
 
         {/* ── Main content ── */}
         <main style={S.main}>
@@ -449,6 +604,7 @@ export default function Dashboard() {
             ))}
           </div>
         </main>
+        <CartAccessButton />
 
       </div>
     </>

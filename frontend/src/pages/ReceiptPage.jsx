@@ -26,7 +26,17 @@ const Receipt = () => {
     window.print();
   };
 
-  
+  const handleBack = () => {
+    const role = sessionStorage.getItem("role");
+
+    if (role === "admin") {
+      navigate("/admin");
+    } else if (role) {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
+  };
 
   if (!order._id && !cartItems.length) {
     return (
@@ -59,12 +69,9 @@ const Receipt = () => {
           <button style={styles.btnPrimary} onClick={handlePrint}>
             🖨️ Print / Save as PDF
           </button>
-         <button
-  style={styles.btnSecondary}
-  onClick={() => navigate("/")}
->
-  Back to Home
-</button>
+          <button style={styles.btnSecondary} onClick={handleBack}>
+            Back to Home
+          </button>
         </div>
 
         {/* ── Printable Receipt ── */}

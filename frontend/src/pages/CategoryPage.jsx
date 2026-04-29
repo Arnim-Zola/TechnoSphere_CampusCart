@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import CartAccessButton from "../components/CartAccessButton";
 import { useCart } from "../context/CartContext";
 
 
@@ -414,6 +415,7 @@ const CategoryPage = () => {
             {message}
           </div>
         )}
+        <CartAccessButton />
       </div>
     </>
   );
