@@ -1,5 +1,8 @@
 # 🚀 CampusCart — Smart Campus Pre-Order System
 
+Website Link: https://testing-eta-teal-85.vercel.app/
+Hosted on Vercel
+
 ## 📌 Overview
 
 CampusCart is a full-stack MERN application designed to eliminate long queues and manual ordering on campus by enabling students to pre-order stationery and printing services.
@@ -74,7 +77,7 @@ CampusCart provides a smart pre-order platform where:
 
 - Node.js  
 - Express.js  
-- MongoDB  
+- Firebase  
 - Mongoose  
 
 ### 🧰 Tools & Libraries
