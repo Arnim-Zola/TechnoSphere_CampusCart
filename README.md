@@ -8,6 +8,13 @@
   <img src="https://img.shields.io/badge/Node.js-v20-339933?style=for-the-badge&logo=node.js" alt="Node.js" />
 </div>
 
+<div align="center">
+  <a href="https://testing-eta-teal-85.vercel.app/"><strong>Live Demo</strong></a> · 
+  <a href="#-project-overview">Overview</a> · 
+  <a href="#-system-architecture">Architecture</a> · 
+  <a href="#-installation--setup">Setup</a>
+</div>
+
 ---
 
 ## 🌟 Project Overview
@@ -130,7 +137,7 @@ TechnoSphere_CampusCart/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/TechnoSphere_CampusCart.git
+git clone https://github.com/Arnim-Zola/TechnoSphere_CampusCart.git
 cd TechnoSphere_CampusCart
 ```
 
@@ -180,7 +187,10 @@ npm start
 ---
 
 ## 🤝 Contributors
-- **Mohammed Sahil** - *Lead Developer & Architect*
+- **Mohammed Sahil** ([Arnim-Zola](https://github.com/Arnim-Zola)) - *Lead Developer & Architect*
+- **Madhava K S Puranik** ([Madhavaks7](https://github.com/Madhavaks7))
+- **Nandan A Divate** ([NandanDivate](https://github.com/NandanDivate))
+- **Mithun Kumar B V** ([mithungit56](https://github.com/mithungit56))
 
 ---
 
